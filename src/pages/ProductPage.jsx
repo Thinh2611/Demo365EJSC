@@ -1,50 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { fetchProductById } from '../services/api';
-import Loading from '../components/Loading';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import products from '../data/products';
+import { useCart } from '../context/CartContext';
 
 const formatPrice = (v) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(v);
 
 const ProductPage = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const productId = parseInt(id, 10); // chuyển id từ string → number
+  const product = products.find((p) => p.id === productId);
+  const { addToCart } = useCart();
 
-  useEffect(() => {
-    let mounted = true;
-    fetchProductById(id)
-      .then((res) => mounted && setProduct(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => mounted && setLoading(false));
-    return () => (mounted = false);
-  }, [id]);
-
-  if (loading) return <Loading />;
-  if (!product) return <div style={{ padding: 40 }}>Không tìm thấy sản phẩm</div>;
+  if (!product) {
+    return (
+      <div style={{ padding: 40, textAlign: 'center' }}>
+        <h2>Không tìm thấy sản phẩm 😢</h2>
+        <p>Vui lòng quay lại <a href="/shop">Shop</a></p>
+      </div>
+    );
+  }
 
   return (
-    <div className="container product-page">
-      <div className="product-layout">
-        <div className="gallery">
-          <img src={product.images[0]} alt={product.name} />
+    <div className="product-page container">
+      <div className="product-images">
+        {product.images.map((img, idx) => (
+          <img key={idx} src={img} alt={product.name} className="main-image" />
+        ))}
+      </div>
+      <div className="product-info">
+        <h1>{product.name}</h1>
+        <div className="price">{formatPrice(product.price)}</div>
+        <p className="description">{product.description}</p>
+
+        <div className="colors">
+          <strong>Màu sắc: </strong>
+          {product.colors.map((color, i) => (
+            <span key={i} className="color-item">
+              {color}
+            </span>
+          ))}
         </div>
-        <div className="details">
-          <h1>{product.name}</h1>
-          <div className="price">{formatPrice(product.price)}</div>
-          <p className="desc">{product.description}</p>
-          <div className="choices">
-            <label>Màu:</label>
-            <div className="colors">
-              {product.colors.map((c) => (
-                <button key={c} className="chip">{c}</button>
-              ))}
-            </div>
-          </div>
-          <div className="product-actions">
-            <button className="btn btn-primary">Thêm vào giỏ</button>
-            <Link to="/shop" className="btn btn-outline">Tiếp tục mua</Link>
-          </div>
+
+        <div className="actions" style={{ marginTop: 16 }}>
+          <button className="btn btn-primary" onClick={() => addToCart(product)}>
+            🛒 Thêm vào giỏ
+          </button>
         </div>
       </div>
     </div>
