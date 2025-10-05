@@ -380,3 +380,24 @@ body{
   text-align: center;
   padding: 40px 20px;
 }
+.search-form {
+  margin: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.search-form input {
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+  width: 180px;
+  transition: all 0.3s ease;
+}
+
+.search-form input:focus {
+  width: 240px;
+  border-color: var(--primary);
+  box-shadow: 0 0 4px rgba(139, 92, 246, 0.4);
+}

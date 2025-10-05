@@ -67,7 +67,25 @@ const products = [
     colors: ['Gray', 'Navy'],
     description:
       'Áo khoác hoodie dày giữ ấm cho mùa đông, thiết kế trẻ trung, dễ phối đồ.'
-  }
+  },
+  {
+    id: 8,
+    name: 'Áo khoác Kaki',
+    price: 459000,
+    images: ['/assets/aokaki.webp']
+  },
+  {
+    id: 9,
+    name: 'Quần sót nam',
+    price: 459000,
+    images: ['/assets/quansot.webp']
+  },
+  {
+    id: 10,
+    name: 'Quần tây nam',
+    price: 459000,
+    images: ['/assets/quantay.webp']
+  },
 ];
 
 export default products;
