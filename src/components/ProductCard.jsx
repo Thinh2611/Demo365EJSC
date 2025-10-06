@@ -9,13 +9,18 @@ const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  // ✅ Thêm vào giỏ hàng nhưng không chuyển trang
+  // 🛠 Nếu product hoặc images chưa có thì không render lỗi
+  if (!product) return null;
+
+  const imageSrc = product.images?.[0] || '/assets/no-image.png';
+
+  // ✅ Thêm vào giỏ hàng (không chuyển trang)
   const handleAddToCart = () => {
     addToCart(product);
-    alert('✅ Sản phẩm đã được thêm vào giỏ hàng!');
+    alert(`✅ Đã thêm "${product.name}" vào giỏ hàng!`);
   };
 
-  // ✅ Mua ngay → thêm và chuyển sang giỏ hàng
+  // ✅ Mua ngay → thêm sản phẩm & chuyển trang giỏ hàng
   const handleBuyNow = () => {
     addToCart(product);
     navigate('/cart');
@@ -23,27 +28,28 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="product-card">
+      {/* Ảnh sản phẩm */}
       <Link to={`/product/${product.id}`} className="img-wrap">
-        <img src={product.images[0]} alt={product.name} />
+        <img src={imageSrc} alt={product.name} loading="lazy" />
       </Link>
 
+      {/* Thông tin sản phẩm */}
       <div className="meta">
         <h3 className="title">{product.name}</h3>
         <div className="price">{formatPrice(product.price)}</div>
 
+        {/* Các nút hành động */}
         <div className="actions">
           <Link to={`/product/${product.id}`} className="btn">
             Xem
           </Link>
 
-          {/* 🛒 Thêm vào giỏ hàng */}
           <button className="btn btn-outline" onClick={handleAddToCart}>
-            Thêm vào giỏ
+            🛒 Thêm vào giỏ
           </button>
 
-          {/* 🟣 Mua ngay */}
           <button className="btn btn-primary" onClick={handleBuyNow}>
-            Mua ngay
+            ⚡ Mua ngay
           </button>
         </div>
       </div>

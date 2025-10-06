@@ -16,24 +16,29 @@ const Shop = () => {
 
   useEffect(() => {
     let mounted = true;
-    fetchProducts()
-      .then((res) => {
+
+    const loadProducts = async () => {
+      try {
+        const res = await fetchProducts(); // 👈 trả về { data: [...] }
         if (mounted) {
           setProducts(res.data);
-          setLoading(false);
+          setFiltered(res.data); // set mặc định khi chưa tìm kiếm
         }
-      })
-      .catch((err) => {
-        console.error('Lỗi tải sản phẩm:', err);
-        setLoading(false);
-      });
+      } catch (error) {
+        console.error('Lỗi tải sản phẩm:', error);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    loadProducts();
 
     return () => (mounted = false);
   }, []);
 
   // 🧠 Lọc sản phẩm theo từ khóa tìm kiếm
   useEffect(() => {
-    if (searchKeyword) {
+    if (searchKeyword && products.length > 0) {
       const filteredItems = products.filter((item) =>
         item.name.toLowerCase().includes(searchKeyword)
       );
@@ -50,7 +55,10 @@ const Shop = () => {
       <h2>🛍️ Tất cả sản phẩm</h2>
 
       {filtered.length === 0 ? (
-        <p>Không tìm thấy sản phẩm nào phù hợp với từ khóa "<strong>{searchKeyword}</strong>"</p>
+        <p>
+          Không tìm thấy sản phẩm nào phù hợp với từ khóa
+          <strong> "{searchKeyword}"</strong>
+        </p>
       ) : (
         <ProductGrid items={filtered} />
       )}
