@@ -401,3 +401,59 @@ body{
   border-color: var(--primary);
   box-shadow: 0 0 4px rgba(139, 92, 246, 0.4);
 }
+.feedback-section {
+  background: #f8f8ff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.feedback-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.feedback-form {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.feedback-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  transition: border-color 0.3s;
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+.feedback-form button {
+  background: #6c63ff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.feedback-form button:hover {
+  background: #5a52d6;
+}
