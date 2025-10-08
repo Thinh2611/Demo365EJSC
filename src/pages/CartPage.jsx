@@ -15,7 +15,9 @@ const CartPage = () => {
     return (
       <div className="container" style={{ padding: 40, textAlign: 'center' }}>
         <h2>🛒 Giỏ hàng trống</h2>
-        <p>Hãy quay lại <Link to="/shop">cửa hàng</Link> để mua sắm nhé!</p>
+        <p>
+          Hãy quay lại <Link to="/shop">cửa hàng</Link> để mua sắm nhé!
+        </p>
       </div>
     );
   }
@@ -37,21 +39,30 @@ const CartPage = () => {
         <tbody>
           {items.map((item) => (
             <tr key={item.id}>
-              <td>{item.name}</td>
+              <td className="cart-item">
+                <img
+                  src={item.images?.[0] || '/assets/no-image.jpg'}
+                  alt={item.name}
+                  className="cart-thumb"
+                />
+                <span>{item.name}</span>
+              </td>
               <td>{formatPrice(item.price)}</td>
               <td>
                 <input
                   type="number"
                   min="1"
                   value={item.quantity}
-                  onChange={(e) =>
-                    updateQuantity(item.id, parseInt(e.target.value, 10))
-                  }
+                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value, 10))}
                 />
               </td>
               <td>{formatPrice(item.price * item.quantity)}</td>
               <td>
-                <button className="btn btn-danger" onClick={() => removeFromCart(item.id)}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => removeFromCart(item.id)}
+                  title="Xóa sản phẩm"
+                >
                   ❌
                 </button>
               </td>

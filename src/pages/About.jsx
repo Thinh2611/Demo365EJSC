@@ -18,7 +18,7 @@ const About = () => {
   return (
     <div className="about-page">
       {/* 🔹 Banner giới thiệu */}
-      <section className="about-hero">
+      <section className="about-hero fade-in-down">
         <div className="container">
           <h1>Về BrightWear</h1>
           <p>
@@ -29,7 +29,7 @@ const About = () => {
       </section>
 
       {/* 🔹 Phần giới thiệu */}
-      <section className="about-intro container">
+      <section className="about-intro container fade-in-up fade-delay-1">
         <h2>Hành trình của chúng tôi</h2>
         <p>
           BrightWear bắt đầu từ một xưởng may nhỏ với mong muốn mang lại những sản phẩm thời trang
@@ -42,23 +42,23 @@ const About = () => {
       </section>
 
       {/* 🔹 Giá trị thương hiệu */}
-      <section className="about-values container">
+      <section className="about-values container fade-in-up fade-delay-2">
         <h2>Giá trị cốt lõi</h2>
         <div className="values-grid">
-          <div className="value-card">
+          <div className="value-card fade-in-up fade-delay-1">
             <h3>✨ Chất lượng</h3>
             <p>
               Chúng tôi ưu tiên chất liệu tốt, thân thiện với môi trường, cùng quy trình sản xuất
               tỉ mỉ để mang đến trải nghiệm tốt nhất.
             </p>
           </div>
-          <div className="value-card">
+          <div className="value-card fade-in-up fade-delay-2">
             <h3>🌿 Bền vững</h3>
             <p>
               BrightWear cam kết giảm thiểu rác thải thời trang, khuyến khích tái chế và tái sử dụng sản phẩm cũ.
             </p>
           </div>
-          <div className="value-card">
+          <div className="value-card fade-in-up fade-delay-3">
             <h3>🤝 Khách hàng là trung tâm</h3>
             <p>
               Mọi sản phẩm và dịch vụ của chúng tôi đều được xây dựng dựa trên trải nghiệm và nhu cầu
@@ -69,7 +69,7 @@ const About = () => {
       </section>
 
       {/* 🔹 Đội ngũ */}
-      <section className="about-team container">
+      <section className="about-team container fade-in-up fade-delay-2">
         <h2>Đội ngũ của chúng tôi</h2>
         <p>
           Đằng sau BrightWear là một tập thể trẻ trung, sáng tạo và nhiệt huyết. 
@@ -78,7 +78,7 @@ const About = () => {
       </section>
 
       {/* ✍️ Form góp ý sử dụng React Hook Form */}
-      <section className="about-feedback container">
+      <section className="about-feedback container fade-in-up fade-delay-2">
         <h2>💬 Gửi ý kiến đóng góp</h2>
         <p>Chúng tôi rất mong nhận được phản hồi của bạn để cải thiện dịch vụ tốt hơn.</p>
 
@@ -123,7 +123,7 @@ const About = () => {
       </section>
 
       {/* 🔹 Lời kết */}
-      <section className="about-footer">
+      <section className="about-footer fade-in-down fade-delay-1">
         <div className="container">
           <h2>Cảm ơn bạn đã đồng hành cùng BrightWear 💜</h2>
           <p>Hãy tiếp tục cùng chúng tôi tạo nên những phong cách sống hiện đại và bền vững hơn mỗi ngày.</p>

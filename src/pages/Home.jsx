@@ -1,62 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ProductCard from '../components/ProductCard'; // ✅ cần để hiện sản phẩm demo
+import ProductCard from '../components/ProductCard'; // ✅ hiện sản phẩm demo
 
-// 🛍️ Sản phẩm demo để trang Home sinh động
+// 🖼️ Danh sách ảnh banner (3 ảnh chuyển động)
+const bannerImages = [
+  '/assets/banner1.jpeg',
+  '/assets/banner2.jpeg',
+  '/assets/banner3.jpeg'
+];
+
+// 🛍️ Sản phẩm demo
 const demoProducts = [
-  {
-    id: 4,
-    name: 'Áo thun Unisex trắng',
-    price: 199000,
-    images: [
-      '/assets/aotayngan.webp'
-    ]
-  },
-  {
-    id: 5,
-    name: 'Áo sơ mi nam cổ đứng',
-    price: 299000,
-    images: [
-     '/assets/aocodung.webp'
-    ]
-  },
-  {
-    id: 6,
-    name: 'Quần jean nữ dáng ôm',
-    price: 359000,
-    images: [
-      '/assets/quannu.webp'
-    ]
-  },
-  {
-    id: 7,
-    name: 'Áo khoác Hoodie mùa đông',
-    price: 459000,
-    images: [
-      '/assets/aomuadong.webp'
-    ]
-  },
-  {
-    id: 8,
-    name: 'Áo khoác Kaki',
-    price: 459000,
-    images: ['/assets/aokaki.webp']
-  },
-  {
-    id: 9,
-    name: 'Quần sót nam',
-    price: 459000,
-    images: ['/assets/quansot.webp']
-  },
-  {
-    id: 10,
-    name: 'Quần tây nam',
-    price: 459000,
-    images: ['/assets/quantay.webp']
-  },
+  { id: 4, name: 'Áo thun Unisex trắng', price: 199000, images: ['/assets/aotayngan.webp'] },
+  { id: 5, name: 'Áo sơ mi nam cổ đứng', price: 299000, images: ['/assets/aocodung.webp'] },
+  { id: 6, name: 'Quần jean nữ dáng ôm', price: 359000, images: ['/assets/quannu.webp'] },
+  { id: 7, name: 'Áo khoác Hoodie mùa đông', price: 459000, images: ['/assets/aomuadong.webp'] },
+  { id: 8, name: 'Áo khoác Kaki', price: 459000, images: ['/assets/aokaki.webp'] },
+  { id: 9, name: 'Quần sót nam', price: 459000, images: ['/assets/quansot.webp'] },
+  { id: 10, name: 'Quần tây nam', price: 459000, images: ['/assets/quantay.webp'] },
 ];
 
 const Home = () => {
+  const [currentBanner, setCurrentBanner] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % bannerImages.length);
+    }, 2000); // ⏱ đổi ảnh mỗi 4 giây
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="home-page">
       {/* 🌟 HERO BANNER */}
@@ -72,8 +45,26 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <div className="hero-right">
-          <img src="/assets/banner.jpeg" alt="hero" />
+
+        {/* 🖼️ Banner slider */}
+        <div className="hero-right banner-container">
+          {bannerImages.map((img, index) => (
+            <div
+              key={index}
+              className={`banner-slide ${index === currentBanner ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${img})` }}
+            ></div>
+          ))}
+
+          <div className="banner-dots">
+            {bannerImages.map((_, index) => (
+              <div
+                key={index}
+                className={`banner-dot ${index === currentBanner ? 'active' : ''}`}
+                onClick={() => setCurrentBanner(index)}
+              ></div>
+            ))}
+          </div>
         </div>
       </section>
 

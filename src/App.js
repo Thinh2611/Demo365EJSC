@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // 🧩 Components
-import Navbar from './components/Header';     //  Zustand
+import Navbar from './components/Header';     // Zustand Navbar
 import Footer from './components/Footer';
 
 // 📄 Pages
@@ -18,7 +18,7 @@ import CheckoutPage from './pages/CheckoutPage'; // 💳 Thanh toán
 function App() {
   return (
     <div className="app-root">
-      {/* 🌐 Thanh điều hướng dùng Zustand */}
+      {/* 🌐 Thanh điều hướng */}
       <Navbar />
 
       {/* 📌 Khu vực nội dung chính */}

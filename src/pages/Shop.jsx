@@ -4,22 +4,21 @@ import { useQuery } from '@tanstack/react-query';
 import ProductGrid from '../components/ProductGrid';
 import { fetchProducts } from '../services/api';
 import Loading from '../components/Loading';
-import { useShopStore } from '../store/useShopStore'; // ✅ Zustand để lưu sản phẩm (optional)
+import { useShopStore } from '../store/useShopStore'; // ✅ Zustand
+
 
 const Shop = () => {
   const location = useLocation();
   const setProducts = useShopStore((state) => state.setProducts);
 
-  // 📝 Lấy từ khóa tìm kiếm từ URL (?search=...)
   const queryParams = new URLSearchParams(location.search);
   const searchKeyword = queryParams.get('search')?.toLowerCase() || '';
 
-  // ⚡ Sử dụng TanStack Query để fetch sản phẩm
   const { data, isLoading, isError } = useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
     onSuccess: (res) => {
-      setProducts(res.data); // ✅ lưu vào Zustand để chia sẻ toàn cục
+      setProducts(res.data);
     },
   });
 
@@ -28,7 +27,6 @@ const Shop = () => {
 
   const products = data?.data || [];
 
-  // 🧠 Lọc sản phẩm theo từ khóa tìm kiếm
   const filtered = searchKeyword
     ? products.filter((item) =>
         item.name.toLowerCase().includes(searchKeyword)
@@ -37,15 +35,17 @@ const Shop = () => {
 
   return (
     <section className="container shop-page">
-      <h2>🛍️ Tất cả sản phẩm</h2>
+      <h2 className="fade-in">🛍️ Tất cả sản phẩm</h2>
 
       {filtered.length === 0 ? (
-        <p>
+        <p className="fade-in">
           Không tìm thấy sản phẩm nào phù hợp với từ khóa
           <strong> "{searchKeyword}"</strong>
         </p>
       ) : (
-        <ProductGrid items={filtered} />
+        <div className="product-grid fade-in">
+          <ProductGrid items={filtered} />
+        </div>
       )}
     </section>
   );
