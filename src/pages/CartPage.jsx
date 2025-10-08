@@ -1,57 +1,75 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useCartStore } from '../store/useCartStore';
 
 const formatPrice = (v) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(v);
 
 const CartPage = () => {
-  const { cart, removeFromCart } = useCart();
   const navigate = useNavigate();
+  const { items = [], removeFromCart, updateQuantity, clearCart } = useCartStore();
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  if (cart.length === 0) {
+  if (items.length === 0) {
     return (
-      <div className="container">
-        <h2>🛒 Giỏ hàng của bạn trống</h2>
-        <Link to="/shop" className="btn btn-primary" style={{ marginTop: '20px' }}>
-          Tiếp tục mua sắm
-        </Link>
+      <div className="container" style={{ padding: 40, textAlign: 'center' }}>
+        <h2>🛒 Giỏ hàng trống</h2>
+        <p>Hãy quay lại <Link to="/shop">cửa hàng</Link> để mua sắm nhé!</p>
       </div>
     );
   }
 
   return (
-    <div className="container">
-      <h2>🛒 Giỏ hàng</h2>
-      <div className="cart-list">
-        {cart.map((item) => (
-          <div key={item.id} className="cart-item">
-            <img src={item.images[0]} alt={item.name} />
-            <div className="cart-info">
-              <h3>{item.name}</h3>
-              <p>{formatPrice(item.price)}</p>
-              <p>Số lượng: {item.quantity}</p>
-            </div>
-            <button
-              className="btn btn-outline"
-              onClick={() => removeFromCart(item.id)}
-            >
-              Xóa
-            </button>
-          </div>
-        ))}
-      </div>
+    <div className="container cart-page">
+      <h2>🛍️ Giỏ hàng của bạn</h2>
+
+      <table className="cart-table">
+        <thead>
+          <tr>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <tr key={item.id}>
+              <td>{item.name}</td>
+              <td>{formatPrice(item.price)}</td>
+              <td>
+                <input
+                  type="number"
+                  min="1"
+                  value={item.quantity}
+                  onChange={(e) =>
+                    updateQuantity(item.id, parseInt(e.target.value, 10))
+                  }
+                />
+              </td>
+              <td>{formatPrice(item.price * item.quantity)}</td>
+              <td>
+                <button className="btn btn-danger" onClick={() => removeFromCart(item.id)}>
+                  ❌
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <div className="cart-summary">
         <h3>Tổng cộng: {formatPrice(total)}</h3>
-        <button
-          className="btn btn-primary"
-          onClick={() => navigate('/checkout')}
-        >
-          Tiến hành thanh toán
-        </button>
+        <div className="cart-actions">
+          <button className="btn btn-outline" onClick={clearCart}>
+            🧹 Xóa giỏ hàng
+          </button>
+          <button className="btn btn-primary" onClick={() => navigate('/checkout')}>
+            💳 Thanh toán
+          </button>
+        </div>
       </div>
     </div>
   );

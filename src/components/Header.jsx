@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useCartStore } from '../store/useCartStore'; // 🧠 Zustand giỏ hàng
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
   const user = localStorage.getItem('loggedInUser');
 
+  // 🛍️ Lấy số lượng sản phẩm trong giỏ từ Zustand
+  const cartCount = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0)
+  );
+
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     navigate('/');
   };
 
-  // 🔍 Hàm xử lý tìm kiếm
+  // 🔍 Xử lý tìm kiếm
   const handleSearch = (e) => {
     e.preventDefault();
     if (keyword.trim() !== '') {
@@ -23,20 +29,36 @@ const Navbar = () => {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        {/* Logo */}
+        {/* 🧢 Logo */}
         <Link to="/" className="brand">
           <span className="logo">👕</span>
           <span className="brand-name">BrightWear</span>
         </Link>
 
-        {/* Menu */}
+        {/* 🧭 Menu điều hướng */}
         <nav className="nav">
           <NavLink to="/" end>
             Trang chủ
           </NavLink>
           <NavLink to="/shop">Sản phẩm</NavLink>
           <NavLink to="/about">Giới thiệu</NavLink>
-          <NavLink to="/cart">Giỏ hàng 🛒</NavLink>
+          <NavLink to="/cart">
+            Giỏ hàng 🛒
+            {cartCount > 0 && (
+              <span
+                style={{
+                  background: 'red',
+                  color: 'white',
+                  borderRadius: '50%',
+                  padding: '2px 8px',
+                  marginLeft: '4px',
+                  fontSize: '0.8rem',
+                }}
+              >
+                {cartCount}
+              </span>
+            )}
+          </NavLink>
         </nav>
 
         {/* 🔍 Thanh tìm kiếm */}
@@ -49,7 +71,7 @@ const Navbar = () => {
           />
         </form>
 
-        {/* Tài khoản */}
+        {/* 👤 Tài khoản */}
         <div className="auth-section">
           {!user ? (
             <>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // 🧩 Components
-import Header from './components/Header';
+import Navbar from './components/Header';     //  Zustand
 import Footer from './components/Footer';
 
 // 📄 Pages
@@ -12,16 +12,16 @@ import ProductPage from './pages/ProductPage';
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import CartPage from './pages/CartPage';       // 🛒 Thêm trang Giỏ hàng
-import CheckoutPage from './pages/CheckoutPage'; // 💳 Thêm trang Thanh toán
+import CartPage from './pages/CartPage';         // 🛒 Giỏ hàng
+import CheckoutPage from './pages/CheckoutPage'; // 💳 Thanh toán
 
 function App() {
   return (
     <div className="app-root">
-      {/* 🌐 Header chung cho toàn trang */}
-      <Header />
+      {/* 🌐 Thanh điều hướng dùng Zustand */}
+      <Navbar />
 
-      {/* 📌 Khu vực hiển thị nội dung trang */}
+      {/* 📌 Khu vực nội dung chính */}
       <main className="main-container">
         <Routes>
           {/* Trang chính */}
@@ -42,9 +42,14 @@ function App() {
           <Route
             path="*"
             element={
-              <div style={{ padding: 40 }}>
+              <div style={{ padding: 40, textAlign: 'center' }}>
                 <h2>❌ Không tìm thấy trang</h2>
-                <p>Vui lòng kiểm tra lại đường dẫn hoặc quay về trang chủ.</p>
+                <p>
+                  Vui lòng kiểm tra lại đường dẫn hoặc{' '}
+                  <a href="/" style={{ color: 'blue', textDecoration: 'underline' }}>
+                    quay về trang chủ
+                  </a>.
+                </p>
               </div>
             }
           />

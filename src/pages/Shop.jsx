@@ -1,54 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import ProductGrid from '../components/ProductGrid';
 import { fetchProducts } from '../services/api';
 import Loading from '../components/Loading';
+import { useShopStore } from '../store/useShopStore'; // ✅ Zustand để lưu sản phẩm (optional)
 
 const Shop = () => {
-  const [products, setProducts] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const setProducts = useShopStore((state) => state.setProducts);
 
-  // 📝 Lấy từ khóa từ URL (?search=...)
+  // 📝 Lấy từ khóa tìm kiếm từ URL (?search=...)
   const queryParams = new URLSearchParams(location.search);
   const searchKeyword = queryParams.get('search')?.toLowerCase() || '';
 
-  useEffect(() => {
-    let mounted = true;
+  // ⚡ Sử dụng TanStack Query để fetch sản phẩm
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['products'],
+    queryFn: fetchProducts,
+    onSuccess: (res) => {
+      setProducts(res.data); // ✅ lưu vào Zustand để chia sẻ toàn cục
+    },
+  });
 
-    const loadProducts = async () => {
-      try {
-        const res = await fetchProducts(); // 👈 trả về { data: [...] }
-        if (mounted) {
-          setProducts(res.data);
-          setFiltered(res.data); // set mặc định khi chưa tìm kiếm
-        }
-      } catch (error) {
-        console.error('Lỗi tải sản phẩm:', error);
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
+  if (isLoading) return <Loading />;
+  if (isError) return <p>❌ Lỗi tải dữ liệu sản phẩm.</p>;
 
-    loadProducts();
-
-    return () => (mounted = false);
-  }, []);
+  const products = data?.data || [];
 
   // 🧠 Lọc sản phẩm theo từ khóa tìm kiếm
-  useEffect(() => {
-    if (searchKeyword && products.length > 0) {
-      const filteredItems = products.filter((item) =>
+  const filtered = searchKeyword
+    ? products.filter((item) =>
         item.name.toLowerCase().includes(searchKeyword)
-      );
-      setFiltered(filteredItems);
-    } else {
-      setFiltered(products);
-    }
-  }, [searchKeyword, products]);
-
-  if (loading) return <Loading />;
+      )
+    : products;
 
   return (
     <section className="container shop-page">
